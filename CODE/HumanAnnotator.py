@@ -5,7 +5,6 @@ class HumanAnnotator:
     def __init__(self,X_list, y,window_size, max_budget=None):
         self.neighborhoods = []
         self.windows=[]
-        # self.neighborhoods = [[10, 20]]
         self.X_list=X_list
         self.y=y
         self.window_size=window_size
@@ -48,7 +47,6 @@ class HumanAnnotator:
             annotation_order = self._connection_cal(node, view_weights)
             flag = False
             for window_idx in annotation_order:
-                # 在增加 count 之前先检查是否达到预算
                 if self.max_budget is not None and self.count >= self.max_budget:
                     self.budget_reached = True
                     print(f"\n🛑 提前终止：已达到最大预算约束数 (max_budget={self.max_budget})")
@@ -72,8 +70,6 @@ class HumanAnnotator:
                     self.windows[view_idx].append([node])
                     centrality_val = centrality_maps[view_idx].get(node, 0.0)
                     self.window_heaps[view_idx].append([(centrality_val, node)])
-                    # print(
-                    #     f"  视图 {view_idx}: 创建新 window {new_window_idx}，添加节点 {node}(centrality={centrality_val:.4f})")
                 self.neighborhoods.append([node])
 
     def _connection_cal(self, node, view_weights):
@@ -101,10 +97,6 @@ class HumanAnnotator:
             else:
                 normalized_dists = (view_dists - d_min) / (d_max - d_min)
             normalized_distances[view_idx] = normalized_dists
-            # print(
-            #     f"视图{view_idx} 原始距离: {[round(d, 4) for d in view_dists]} | "
-            #     f"归一化后: {[round(d, 4) for d in normalized_dists]}"
-            # )
         if view_weights is None:
             weights = np.ones(self.n_views) / self.n_views
         else:
