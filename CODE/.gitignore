@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+.numba_cache/
+results/
+test_results/
+*.log
+datasets/Animal.mat
